@@ -2,21 +2,21 @@ Summary:	GO - GNOME word processor
 Summary(pl):	GO - Procesor tekstu dla GNOME
 Name:		go
 Version:	0.1.35
-Release:	4
-Copyright:	GPL
-Group:		X11/GNOME/Editors
-Group(pl):	X11/GNOME/Edytory
-Source:		ftp://ftp.gnome.org/pub/GNOME/stable/sources/go/%{name}-%{version}.tar.gz
+Release:	5
+License:	GPL
+Group:		X11/Applications/Editors
+Group(pl):	X11/Aplikacje/Edytory
+Source0:	ftp://ftp.gnome.org/pub/GNOME/stable/sources/go/%{name}-%{version}.tar.gz
 Patch0:		go-def.patch
 Patch1:		go-desktop.patch
 Patch2:		go-plugins.patch
-URL: 		http://www-personal.umich.edu/~clahey/software/
+URL:		http://www-personal.umich.edu/~clahey/software/
 BuildRequires:	XFree86-devel
 BuildRequires:	xpm-devel
 BuildRequires:	gtk+-devel
 BuildRequires:	glib-devel
 BuildRequires:	gnome-libs-devel
-BuildRequires:	gnome-print-devel
+BuildRequires:	gnome-print-devel >= 0.12
 BuildRequires:	libxml-devel
 BuildRequires:	imlib-devel
 BuildRequires:	libhnj-devel >= 0.1.1
@@ -37,8 +37,8 @@ Procesor tekstu dla ¶rodowiska GNOME.
 %package plugins
 Summary:	Go Plugins
 Summary(pl):	Wtyczki Go
-Group:		X11/GNOME/Editors
-Group(pl):	X11/GNOME/Edytory
+Group:		X11/Applications/Editors
+Group(pl):	X11/Aplikacje/Edytory
 
 %description plugins
 This package contains a set of plugins written for Go but used also by few
