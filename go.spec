@@ -26,6 +26,7 @@ BuildRoot:	/tmp/%{name}-%{version}-root
 
 %define		_prefix		/usr/X11R6
 %define		_libexecdir	%{_libdir}
+%define		_applnkdir	%{_datadir}/applnk
 
 %description
 A word processor for GNOME.
@@ -75,7 +76,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc {AUTHORS,ChangeLog,README,HISTORY,THANKS,TODO}.gz
 %attr(755,root,root) %{_bindir}/go
 %{_datadir}/hypn
-%{_datadir}/applnk/Editors/go.desktop
+%{_applnkdir}/Editors/go.desktop
 
 %files plugins
 %defattr(644,root,root,755)
