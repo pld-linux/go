@@ -11,14 +11,16 @@ Patch1:		%{name}-desktop.patch
 Patch2:		%{name}-plugins.patch
 Patch3:		%{name}-make.patch
 URL:		http://www-personal.umich.edu/~clahey/software/
-BuildRequires:	gtk+-devel >= 1.1.15
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	gnome-libs-devel
 BuildRequires:	gnome-print-devel >= 0.14
-BuildRequires:	libxml-devel
+BuildRequires:	gtk+-devel >= 1.1.15
 BuildRequires:	imlib-devel
 BuildRequires:	libhnj-devel >= 0.1.1
+BuildRequires:	libtool
+BuildRequires:	libxml-devel
 BuildRequires:	zlib-devel
-BuildRequires:	automake
 Requires:	go-plugins
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -53,7 +55,7 @@ równie¿ przez kilka innych edytorów.
 
 %build
 %{__libtoolize}
-aclocal -I /usr/share/aclocal/gnome
+%{__aclocal} -I /usr/share/aclocal/gnome
 %{__automake}
 %{__autoconf}
 %configure
@@ -66,8 +68,6 @@ rm -rf $RPM_BUILD_ROOT
 	sysdir=%{_applnkdir}/Office/Wordprocessors \
 	install
 
-gzip -9nf AUTHORS ChangeLog README HISTORY THANKS TODO
-
 #%find_lang %{name}
 
 %clean
@@ -75,7 +75,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc {AUTHORS,ChangeLog,README,HISTORY,THANKS,TODO}.gz
+%doc AUTHORS ChangeLog README HISTORY THANKS TODO
 %attr(755,root,root) %{_bindir}/go
 %{_datadir}/hypn
 %{_applnkdir}/Office/Wordprocessors/go.desktop
