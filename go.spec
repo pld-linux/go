@@ -25,7 +25,6 @@ BuildRequires:	zlib-devel
 Requires:	go-plugins
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_prefix		/usr/X11R6
 %define		_libexecdir	%{_libdir}
 
 %description
