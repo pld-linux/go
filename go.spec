@@ -5,9 +5,6 @@ Version:	0.1.35
 Release:	8
 License:	GPL
 Group:		X11/Applications/Editors
-Group(de):	X11/Applikationen/Editors
-Group(pl):	X11/Aplikacje/Edytory
-Group(pt):	X11/Aplicações/Editores
 Source0:	ftp://ftp.gnome.org/pub/GNOME/stable/sources/go/%{name}-%{version}.tar.gz
 Patch0:		%{name}-def.patch
 Patch1:		%{name}-desktop.patch
@@ -38,9 +35,6 @@ Procesor tekstu dla ¶rodowiska GNOME.
 Summary:	Go Plugins
 Summary(pl):	Wtyczki Go
 Group:		X11/Applications/Editors
-Group(de):	X11/Applikationen/Editors
-Group(pl):	X11/Aplikacje/Edytory
-Group(pt):	X11/Aplicações/Editores
 
 %description plugins
 This package contains a set of plugins written for Go but used also by
