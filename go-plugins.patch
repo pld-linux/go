@@ -1,0 +1,433 @@
+--- go-0.1.35/plugins/Makefile.am	Sat Feb 27 00:49:08 1999
++++ go-0.1.35.new/plugins/Makefile.am	Mon Sep 20 17:23:41 1999
+@@ -3,7 +3,7 @@
+ 
+ SUBDIRS = prm
+ 
+-plugin_PROGRAMS = cvsdiff-plugin encrypt-plugin openother-plugin reverse-plugin testselect-plugin hello-plugin convert-plugin diff-plugin email-plugin browse-plugin spell-plugin httpview-plugin
++plugin_PROGRAMS = cvsdiff-plugin encrypt-plugin openother-plugin reverse-plugin testselect-plugin hello-plugin wordcount-plugin time-plugin convert-plugin diff-plugin email-plugin browse-plugin spell-plugin httpview-plugin man-plugin
+ 
+ INCLUDES = $(GTK_CFLAGS) -Wall $(GNOME_INCLUDEDIR)
+ CPPFLAGS = -DGNOMELOCALEDIR=\""$(datadir)/locale"\"
+@@ -51,6 +51,20 @@
+ 
+ hello_plugin_LDADD = $(GTK_LIBS)
+ 
++wordcount_plugin_SOURCES = \
++ wordcount.c \
++ client.c \
++ client.h
++
++wordcount_plugin_LDADD = $(GTK_LIBS)
++
++time_plugin_SOURCES = \
++ time.c \
++ client.c \
++ client.h
++
++time_plugin_LDADD = $(GTK_LIBS)
++
+ convert_plugin_SOURCES = \
+  convert.c \
+  client.c \
+@@ -92,3 +106,10 @@
+  client.h
+ 
+ httpview_plugin_LDFLAGS = $(GTK_LIBS) $(GNOMEUI_LIBS) $(GNOME_LIBDIR)
++
++man_plugin_SOURCES = \
++ man.c \
++ client.c \
++ client.h
++
++man_plugin_LDFLAGS = $(GTK_LIBS) $(GNOMEUI_LIBS) $(GNOME_LIBDIR)
+--- go-0.1.35/plugins/man.c	Thu Jan  1 01:00:00 1970
++++ go-0.1.35.new/plugins/man.c	Thu May 20 14:28:48 1999
+@@ -0,0 +1,170 @@
++/* man.c - Man Page viewer plugin
++ *
++ * Copyright (C) 1999 Alex Roberts
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2, or (at your option)
++ * any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <unistd.h>
++#include <config.h>
++#include <gnome.h>
++#include "client.h"
++
++static GtkWidget *entry1;
++static GtkWidget *entry2;
++static gint context;
++
++
++
++static void
++man_get_page( GtkWidget *widget, gint button, gpointer data )
++{
++  if ( button == 0 )
++    {
++      char buff[1025];
++      int fdpipe[2];
++      int pid;
++      char *args[2] = { NULL };
++      int docid;
++      int length;
++
++      args[0] = gtk_entry_get_text( GTK_ENTRY( entry1 ) );
++      args[1] = gtk_entry_get_text( GTK_ENTRY( entry2 ) );
++
++      if( pipe( fdpipe ) == -1 )
++	{
++	  _exit( 1 );
++	}
++  
++      pid = fork();
++      if ( pid == 0 )
++	{
++	  /* New process. */
++	  char *argv[4];
++
++	  close( 1 );
++	  dup( fdpipe[1] );
++	  close( fdpipe[0] );
++	  close( fdpipe[1] );
++      
++	  argv[0] = g_strdup( "man" );
++	  argv[1] = args[1];
++	  argv[2] = args[0];
++	  argv[3] = NULL;
++	  execv( "/usr/bin/man", argv );
++	  /* This is only reached if something goes wrong. */
++	  _exit( 1 );
++	}
++      close( fdpipe[1] );
++
++      docid = client_document_new( context, "man" );
++  
++      length = 1;
++      while( length > 0 )
++	{
++	  buff[ length = read( fdpipe[0], buff, 1024 ) ] = 0;
++	  if( length > 0 )
++	    {
++	      client_text_append( docid, buff, length );
++	    }
++	}
++      client_document_show( docid );
++  
++      gnome_config_push_prefix ("/Editor_Plugins/Man/");
++      gnome_config_set_string ("Page", args[0]);
++      gnome_config_set_string ("Section", args[1]);
++      gnome_config_pop_prefix ();
++      gnome_config_sync ();
++  
++    }
++  gnome_dialog_close( GNOME_DIALOG( widget ) );
++}
++
++static void done( GtkWidget *widget, gpointer data )
++{
++  client_finish(context);
++  gtk_main_quit();
++}
++
++int main( int argc, char *argv[] )
++{
++  GtkWidget *label;
++  GtkWidget *hbox;
++  GtkWidget *dialog;
++  client_info info = empty_info;
++  gchar *temp;
++
++  info.menu_location = "[Plugins]Man Page";
++
++  context = client_init( &argc, &argv, &info );
++  
++  /* gtk_init( &argc, &argv ); */
++  bindtextdomain(PACKAGE, GNOMELOCALEDIR);
++  textdomain(PACKAGE);
++
++  gnome_init("manwse-plugin", VERSION, argc, argv);
++
++  dialog = gnome_dialog_new( _("The Man Page Viewer Plugin"),
++			     GNOME_STOCK_BUTTON_OK,
++			     GNOME_STOCK_BUTTON_CANCEL,
++			     NULL );
++  gnome_dialog_set_default( GNOME_DIALOG( dialog ), 0 );
++  gtk_signal_connect( GTK_OBJECT( dialog ), "clicked",
++		      GTK_SIGNAL_FUNC( man_get_page ), NULL );
++  gtk_signal_connect( GTK_OBJECT( dialog ), "destroy",
++		      GTK_SIGNAL_FUNC( done ), NULL );
++  /*  gtk_widget_set_usize (GTK_WIDGET (dialog), 353, 100); */
++
++  hbox = gtk_hbox_new( FALSE, 0 );
++  gtk_box_pack_start( GTK_BOX( GNOME_DIALOG( dialog )->vbox ), hbox,
++		      TRUE, TRUE, 0 );
++
++  label = gtk_label_new( "Page:" );
++  gtk_box_pack_start( GTK_BOX( hbox ), label,
++		      TRUE, TRUE, 0 );
++
++  entry1 = gtk_entry_new();
++  gtk_box_pack_start( GTK_BOX( hbox ), entry1, TRUE, TRUE, 0 );
++
++  hbox = gtk_hbox_new( FALSE, 0 );
++  gtk_box_pack_start( GTK_BOX( GNOME_DIALOG( dialog )->vbox ), hbox,
++		      TRUE, TRUE, 0 );
++
++  label = gtk_label_new( "Section:" );
++  gtk_box_pack_start( GTK_BOX( hbox ), label,
++		      TRUE, TRUE, 0 );
++
++  entry2 = gtk_entry_new();
++  gtk_box_pack_start( GTK_BOX( hbox ), entry2, TRUE, TRUE, 0 );
++
++
++  gnome_config_push_prefix ("/Editor_Plugins/Man/");
++  temp = gnome_config_get_string( "Page" );
++  if ( temp )
++    {
++      gtk_entry_set_text ( GTK_ENTRY( entry1 ), temp );
++      g_free( temp );
++    }
++  gnome_config_pop_prefix ();
++  gnome_config_sync ();
++
++  gtk_widget_show_all( dialog );
++
++  gtk_main();
++
++  exit( 0 );
++}
+--- go-0.1.35/plugins/time.c	Thu Jan  1 01:00:00 1970
++++ go-0.1.35.new/plugins/time.c	Mon May 24 15:37:11 1999
+@@ -0,0 +1,92 @@
++/* time.c - time plugin.
++ *
++ * Copyright (C) 1999 Alex Roberts.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2, or (at your option)
++ * any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * ---------------
++ */
++
++#include <stdio.h>
++#include <stdlib.h>
++#include <unistd.h>
++#include <time.h>
++/* Header for making plugin act as a plugin */
++#include "client.h"
++
++static gint context;
++static gint docid;
++static gchar *the_time;
++char *out = NULL;
++
++/* Gratiously ripped out of GIMP (app/general.c), with a fiew minor changes */
++char *get_time()
++{
++	static char static_buf[21];
++  	char *tmp;
++  	time_t clock;
++  	struct tm *now;
++  	const char *format = NULL;
++  	size_t out_length = 0;
++  	
++
++  	clock = time (NULL);
++  	/*now = gmtime (&clock);*/
++  	now = localtime (&clock);
++	  	
++  	tmp = static_buf;
++	
++  	/* date format derived from ISO 8601:1988 */
++  	/*sprintf(tmp, "%04d-%02d-%02d%c%02d:%02d:%02d%c",
++	  	now->tm_year + 1900, now->tm_mon + 1, now->tm_mday,
++	  	' ',
++	  	now->tm_hour, now->tm_min, now->tm_sec,
++	  	'\000'); 
++	
++	return tmp;
++	*/
++	format = "%a %b %e %H:%M:%S %Z %Y";
++
++	do
++    	  {
++      	    out_length += 200;
++      	    out = (char *) realloc (out, out_length);
++    	  }
++  	while (strftime (out, out_length, format, now) == 0);
++
++  	
++  	return out;
++}
++  
++int main( int argc, char *argv[] )
++{
++  client_info info = empty_info;
++  
++  /* Location of the plugin in the 'Plugin's' menu in gEdit */
++  info.menu_location = "[Plugins]Insert Time";
++  
++  	      /* Initialisation of the Plugin itself, checking if being
++  	         run as a plugin (ie, fromg gEdit, not from command line */	
++    context = client_init( &argc, &argv, &info );
++
++	/* The 'output' of the Plugin */
++	docid = client_document_current (context);
++	
++	the_time = get_time();
++	
++	client_text_insert (docid, the_time, strlen(the_time), client_document_get_position (docid));
++	
++	
++      client_finish( context );
++ 
++  free (out);
++  exit(0);
++}
+--- go-0.1.35/plugins/browse.c	Thu Feb 11 16:53:27 1999
++++ go-0.1.35.pius/plugins/browse.c	Thu Jun 24 17:27:42 1999
+@@ -25,7 +25,7 @@
+ #include "client.h"
+ 
+ static GtkWidget *entry1;
+-static GtkWidget *entry2;
++/*static GtkWidget *entry2;*/
+ static gint context;
+ 
+ 
+@@ -127,14 +127,14 @@
+ 		      GTK_SIGNAL_FUNC( done ), NULL );
+   /*  gtk_widget_set_usize (GTK_WIDGET (dialog), 353, 100); */
+ 
+-  label = gtk_label_new( "       Url:  " );
+-  gtk_box_pack_start( GTK_BOX( GNOME_DIALOG( dialog )->vbox ), label,
+-		      TRUE, TRUE, 0 );
+-
+   hbox = gtk_hbox_new( FALSE, 0 );
+   gtk_box_pack_start( GTK_BOX( GNOME_DIALOG( dialog )->vbox ), hbox,
+ 		      TRUE, TRUE, 0 );
+-  
++		      
++  label = gtk_label_new( "       Url:  " );
++  gtk_box_pack_start( GTK_BOX( hbox ), label,
++		      TRUE, TRUE, 0 );
++
+   entry1 = gtk_entry_new();
+   gtk_box_pack_start( GTK_BOX( hbox ), entry1, TRUE, TRUE, 0 );
+ 
+--- go-0.1.35/plugins/wordcount.c	Thu Jan  1 01:00:00 1970
++++ go-0.1.35.pius/plugins/wordcount.c	Tue Nov 16 17:43:54 1999
+@@ -0,0 +1,88 @@
++/* word-count.c
++ *
++ * Copyright (C) 1998 Chris Lahey.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2, or (at your option)
++ * any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#include <string.h>
++#include <config.h>
++#include <gnome.h>
++#include "client.h"
++
++int main( int argc, char *argv[] )
++{
++  int docid;
++  int length;
++  int context;
++  int i;
++  gint char_count = 0;
++  gint par_count = 0;
++  gint word_count = 0;
++  gboolean in_word = FALSE;
++  gchar *buff, *msg;
++  client_info info = empty_info;
++
++  info.menu_location = "[Plugins]Word Count";
++
++  context = client_init( &argc, &argv, &info );
++
++  bindtextdomain(PACKAGE, GNOMELOCALEDIR);
++  textdomain(PACKAGE);
++
++  gnome_init("wordcount-plugin", VERSION, argc, argv);
++
++  docid = client_document_current( context );
++  length = strlen( buff = client_text_get( docid ) );
++
++  for( i=0; i < length; i++ )
++    {
++      switch( buff[i] )
++	{
++	case ' ':
++	  if ( in_word )
++	    word_count ++;
++	  in_word = FALSE;
++	  break;
++	case '\n':
++	  if ( in_word )
++	    word_count ++;
++	  par_count ++;
++	  in_word = FALSE;
++	  break;
++	default:
++	  in_word = TRUE;
++	  break;
++	}
++      char_count ++;
++    }
++  if ( in_word )
++    word_count ++;
++  par_count ++;
++  
++  msg = g_malloc0 (80);
++  sprintf(msg, "Characters: %d\nWords: %d\nParagraphs: %d\n",
++	   char_count, word_count, par_count );
++
++  gnome_dialog_run_and_close ((GnomeDialog *)
++		   gnome_message_box_new (msg, GNOME_MESSAGE_BOX_INFO,
++			   					  GNOME_STOCK_BUTTON_OK, NULL));
++
++  gtk_main ();
++     
++  client_finish( context );
++  
++  exit(0);
++}
