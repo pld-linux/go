@@ -12,8 +12,9 @@ Source0:	ftp://ftp.gnome.org/pub/GNOME/stable/sources/go/%{name}-%{version}.tar.
 Patch0:		%{name}-def.patch
 Patch1:		%{name}-desktop.patch
 Patch2:		%{name}-plugins.patch
+Patch3:		%{name}-make.patch
 URL:		http://www-personal.umich.edu/~clahey/software/
-BuildRequires:	gtk+-devel
+BuildRequires:	gtk+-devel >= 1.1.15
 BuildRequires:	gnome-libs-devel
 BuildRequires:	gnome-print-devel >= 0.14
 BuildRequires:	libxml-devel
@@ -54,9 +55,13 @@ równie¿ przez kilka innych edytorów.
 %patch0 -p0
 %patch1 -p0
 %patch2 -p1
+#%patch3 -p1
 
 %build
+libtoolize --copy --force
+aclocal -I /usr/share/aclocal/gnome
 automake -a -c
+autoconf
 %configure
 %{__make}
 
