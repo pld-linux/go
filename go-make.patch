@@ -1,0 +1,11 @@
+--- go-0.1.35/plugins/prm/Makefile.am~	Thu Nov  8 15:07:35 2001
++++ go-0.1.35/plugins/prm/Makefile.am	Thu Nov  8 15:07:42 2001
+@@ -22,8 +22,6 @@
+ LDADD = \
+ 	$(GTK_LIBS)
+ 
+-plugin_PROGRAMS = prm-plugin
+-
+ prm_plugin_DEPENDENCIES = $(DEPS)
+ 
+ CPPFLAGS = \
