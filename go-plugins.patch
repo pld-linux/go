@@ -18,7 +18,7 @@
 + client.c \
 + client.h
 +
-+wordcount_plugin_LDADD = $(GTK_LIBS)
++wordcount_plugin_LDADD = $(GTK_LIBS) $(GNOMEUI_LIBS) $(GNOME_LIBDIR)
 +
 +time_plugin_SOURCES = \
 + time.c \
