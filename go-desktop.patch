@@ -26,3 +26,14 @@
  TryExec=go
  Exec=go
  Icon=gnome-word.png
+--- Makefile.am~	Sat Feb 27 00:27:14 1999
++++ Makefile.am	Mon Sep 20 17:36:15 1999
+@@ -10,7 +10,7 @@
+ 	$(LIBHNJ_CFLAGS)		\
+ 	$(GNOME_PRINT_CFLAGS)
+ 
+-sysdir   = $(datadir)/gnome/apps/Applications
++sysdir   = $(datadir)/applnk/Editors
+ sys_DATA = go.desktop
+ 
+ LDADD = $(top_builddir)/gtkrichtext/librichtext.a	\
