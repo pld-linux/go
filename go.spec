@@ -38,12 +38,12 @@ Group:		X11/Applications/Editors
 Group(pl):	X11/Aplikacje/Edytory
 
 %description plugins
-This package contains a set of plugins written for Go but used also by few
-other editors.
+This package contains a set of plugins written for Go but used also by
+few other editors.
 
 %description plugins -l pl
-Ten pakiet zawiera zestaw wtyczek napisanych dla Go, ale u¿ywanych równie¿
-przez kilka innych edytorów.
+Ten pakiet zawiera zestaw wtyczek napisanych dla Go, ale u¿ywanych
+równie¿ przez kilka innych edytorów.
 
 %prep
 %setup -q
