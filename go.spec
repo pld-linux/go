@@ -9,6 +9,7 @@ Group(pl):	X11/GNOME/Edytory
 Source:		ftp://ftp.gnome.org/pub/GNOME/sources/go/%{name}-%{version}.tar.gz
 Patch0:		go-def.patch
 Patch1:		go-desktop.patch
+Patch2:		go-new_plugins.patch
 URL: 		http://www-personal.umich.edu/~clahey/software/
 BuildRequires:	XFree86-devel
 BuildRequires:	xpm-devel
@@ -35,8 +36,10 @@ Procesor tekstu dla ¶rodowiska GNOME.
 %setup -q
 %patch0 -p0
 %patch1 -p0
+%patch2 -p1
 
 %build
+automake
 LDFLAGS="-s" ; export LDFLAGS
 %configure
 make
