@@ -2,7 +2,7 @@ Summary:	GO - GNOME word processor
 Summary(pl):	GO - Procesor tekstu dla GNOME
 Name:		go
 Version:	0.1.35
-Release:	8
+Release:	9
 License:	GPL
 Group:		X11/Applications/Editors
 Source0:	ftp://ftp.gnome.org/pub/GNOME/stable/sources/go/%{name}-%{version}.tar.gz
@@ -55,7 +55,7 @@ równie¿ przez kilka innych edytorów.
 
 %build
 %{__libtoolize}
-%{__aclocal} -I /usr/share/aclocal/gnome
+%{__aclocal} -I %{_aclocaldir}/gnome
 %{__automake}
 %{__autoconf}
 %configure
@@ -63,10 +63,9 @@ równie¿ przez kilka innych edytorów.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__make} \
+%{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	sysdir=%{_applnkdir}/Office/Wordprocessors \
-	install
+	sysdir=%{_applnkdir}/Office/Wordprocessors
 
 #%find_lang %{name}
 
