@@ -7,6 +7,7 @@ License:	GPL
 Group:		X11/Applications/Editors
 # formerly ftp://ftp.gnome.org/pub/GNOME/stable/sources/go/
 Source0:	http://tiger.bioinf.cs.uni-potsdam.de/free/Desktops/Gnome/%{name}-%{version}.tar.gz
+# Source0-md5:	ab98f516672c691816c3bce58b191493
 Patch0:		%{name}-def.patch
 Patch1:		%{name}-desktop.patch
 Patch2:		%{name}-plugins.patch
