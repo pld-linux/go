@@ -2,7 +2,7 @@ Summary:	GO - GNOME word processor
 Summary(pl):	GO - Procesor tekstu dla GNOME
 Name:		go
 Version:	0.1.35
-Release:	7
+Release:	8
 License:	GPL
 Group:		X11/Applications/Editors
 Group(de):	X11/Applikationen/Editors
