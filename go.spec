@@ -22,11 +22,10 @@ BuildRequires:	imlib-devel
 BuildRequires:	libhnj-devel >= 0.1.1
 BuildRequires:	zlib-devel
 Requires:	go-plugins
-BuildRoot:	/tmp/%{name}-%{version}-root
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
 %define		_libexecdir	%{_libdir}
-%define		_applnkdir	%{_datadir}/applnk
 
 %description
 A word processor for GNOME.
