@@ -5,11 +5,13 @@ Version:	0.1.35
 Release:	7
 License:	GPL
 Group:		X11/Applications/Editors
+Group(de):	X11/Applikationen/Editors
 Group(pl):	X11/Aplikacje/Edytory
+Group(pt):	X11/Aplicações/Editores
 Source0:	ftp://ftp.gnome.org/pub/GNOME/stable/sources/go/%{name}-%{version}.tar.gz
-Patch0:		go-def.patch
-Patch1:		go-desktop.patch
-Patch2:		go-plugins.patch
+Patch0:		%{name}-def.patch
+Patch1:		%{name}-desktop.patch
+Patch2:		%{name}-plugins.patch
 URL:		http://www-personal.umich.edu/~clahey/software/
 BuildRequires:	gtk+-devel
 BuildRequires:	gnome-libs-devel
@@ -34,7 +36,9 @@ Procesor tekstu dla ¶rodowiska GNOME.
 Summary:	Go Plugins
 Summary(pl):	Wtyczki Go
 Group:		X11/Applications/Editors
+Group(de):	X11/Applikationen/Editors
 Group(pl):	X11/Aplikacje/Edytory
+Group(pt):	X11/Aplicações/Editores
 
 %description plugins
 This package contains a set of plugins written for Go but used also by
@@ -51,8 +55,7 @@ równie¿ przez kilka innych edytorów.
 %patch2 -p1
 
 %build
-automake
-LDFLAGS="-s" ; export LDFLAGS
+automake -a -c
 %configure
 %{__make}
 
