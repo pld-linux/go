@@ -54,8 +54,8 @@ równie¿ przez kilka innych edytorów.
 %build
 libtoolize --copy --force
 aclocal -I /usr/share/aclocal/gnome
-automake -a -c -f
-autoconf
+%{__automake}
+%{__autoconf}
 %configure
 %{__make}
 
