@@ -1,0 +1,28 @@
+--- Makefile.in~	Sat Feb 27 01:24:36 1999
++++ Makefile.in	Mon Sep 20 00:42:14 1999
+@@ -132,7 +132,7 @@
+ INCLUDES = $(GTK_CFLAGS) -Wall -ansi		$(GNOME_INCLUDEDIR)			-I$(srcdir)/gtkrichtext			$(LIBHNJ_CFLAGS)			$(GNOME_PRINT_CFLAGS)
+ 
+ 
+-sysdir = $(datadir)/gnome/apps/Applications
++sysdir = $(datadir)/applnk/Editors
+ sys_DATA = go.desktop
+ 
+ LDADD = $(top_builddir)/gtkrichtext/librichtext.a		$(LIBHNJ_LIBS)			$(GNOME_XML_LIB)		$(GNOME_PRINT_LIBS)		$(GNOMEUI_LIBS)			$(GTK_LIBS)			$(INTLLIBS)
+--- go.desktop~	Sat Feb  6 15:09:19 1999
++++ go.desktop	Mon Sep 20 00:40:20 1999
+@@ -1,5 +1,5 @@
+ [Desktop Entry]
+-Name=Go: Word Processor
++Name=go
+ Name[es]=go
+ Name[fr]=go
+ Name[no]=go
+@@ -8,6 +8,7 @@
+ Comment[de]=Textverarbeitung
+ Comment[es]=Procesador de textos
+ Comment[fr]=Traitement de Texte
++Comment[pl]=Procesor tekstu
+ TryExec=go
+ Exec=go
+ Icon=gnome-word.png
