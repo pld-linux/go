@@ -52,7 +52,7 @@ równie¿ przez kilka innych edytorów.
 %patch3 -p1
 
 %build
-libtoolize --copy --force
+%{__libtoolize}
 aclocal -I /usr/share/aclocal/gnome
 %{__automake}
 %{__autoconf}
