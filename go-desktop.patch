@@ -18,12 +18,12 @@
  Name[es]=go
  Name[fr]=go
  Name[no]=go
-@@ -8,6 +8,7 @@
+@@ -8,6 +8,6 @@
  Comment[de]=Textverarbeitung
  Comment[es]=Procesador de textos
  Comment[fr]=Traitement de Texte
 +Comment[pl]=Procesor tekstu
- TryExec=go
+-TryExec=go
  Exec=go
  Icon=gnome-word.png
 --- Makefile.am~	Sat Feb 27 00:27:14 1999
