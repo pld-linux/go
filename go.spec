@@ -14,8 +14,8 @@ BuildRequires:	XFree86-devel
 BuildRequires:	xpm-devel
 BuildRequires:	gtk+-devel
 BuildRequires:	glib-devel
-BuildRequires:	gnome-libs
-BuildRequires:	gnome-print
+BuildRequires:	gnome-libs-devel
+BuildRequires:	gnome-print-devel
 BuildRequires:	libxml-devel
 BuildRequires:	imlib-devel
 BuildRequires:	libhnj-devel >= 0.1.1
