@@ -20,6 +20,7 @@ BuildRequires:	libxml-devel
 BuildRequires:	imlib-devel
 BuildRequires:	libhnj-devel >= 0.1.1
 BuildRequires:	zlib-devel
+BuildRequires:	automake
 Requires:	go-plugins
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
