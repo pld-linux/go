@@ -2,14 +2,14 @@ Summary:	GO - GNOME word processor
 Summary(pl):	GO - Procesor tekstu dla GNOME
 Name:		go
 Version:	0.1.35
-Release:	2
+Release:	3
 Copyright:	GPL
 Group:		X11/GNOME/Editors
 Group(pl):	X11/GNOME/Edytory
 Source:		ftp://ftp.gnome.org/pub/GNOME/sources/go/%{name}-%{version}.tar.gz
 Patch0:		go-def.patch
 Patch1:		go-desktop.patch
-Patch2:		go-new_plugins.patch
+Patch2:		go-plugins.patch
 URL: 		http://www-personal.umich.edu/~clahey/software/
 BuildRequires:	XFree86-devel
 BuildRequires:	xpm-devel
@@ -65,12 +65,12 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 gzip -9nf AUTHORS ChangeLog README HISTORY THANKS TODO
 
-%find_lang %{name}
+#%find_lang %{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files -f %{name}.lang
+%files
 %defattr(644,root,root,755)
 %doc {AUTHORS,ChangeLog,README,HISTORY,THANKS,TODO}.gz
 %attr(755,root,root) %{_bindir}/go
