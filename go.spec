@@ -11,7 +11,6 @@ Patch0:		go-def.patch
 Patch1:		go-desktop.patch
 Patch2:		go-plugins.patch
 URL:		http://www-personal.umich.edu/~clahey/software/
-BuildRequires:	xpm-devel
 BuildRequires:	gtk+-devel
 BuildRequires:	gnome-libs-devel
 BuildRequires:	gnome-print-devel >= 0.14
