@@ -6,7 +6,7 @@ Release:	3
 Copyright:	GPL
 Group:		X11/GNOME/Editors
 Group(pl):	X11/GNOME/Edytory
-Source:		ftp://ftp.gnome.org/pub/GNOME/sources/go/%{name}-%{version}.tar.gz
+Source:		ftp://ftp.gnome.org/pub/GNOME/stable/sources/go/%{name}-%{version}.tar.gz
 Patch0:		go-def.patch
 Patch1:		go-desktop.patch
 Patch2:		go-plugins.patch
