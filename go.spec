@@ -5,7 +5,8 @@ Version:	0.1.35
 Release:	9
 License:	GPL
 Group:		X11/Applications/Editors
-Source0:	ftp://ftp.gnome.org/pub/GNOME/stable/sources/go/%{name}-%{version}.tar.gz
+# formerly ftp://ftp.gnome.org/pub/GNOME/stable/sources/go/
+Source0:	http://tiger.bioinf.cs.uni-potsdam.de/free/Desktops/Gnome/%{name}-%{version}.tar.gz
 Patch0:		%{name}-def.patch
 Patch1:		%{name}-desktop.patch
 Patch2:		%{name}-plugins.patch
