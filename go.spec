@@ -1,5 +1,5 @@
 Summary:	GO - GNOME word processor
-Summary(pl):	GO - Procesor tekstu dla GNOME
+Summary(pl.UTF-8):   GO - Procesor tekstu dla GNOME
 Name:		go
 Version:	0.1.35
 Release:	9
@@ -31,21 +31,21 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 A word processor for GNOME.
 
-%description -l pl
-Procesor tekstu dla ∂rodowiska GNOME.
+%description -l pl.UTF-8
+Procesor tekstu dla ≈õrodowiska GNOME.
 
 %package plugins
 Summary:	Go Plugins
-Summary(pl):	Wtyczki Go
+Summary(pl.UTF-8):   Wtyczki Go
 Group:		X11/Applications/Editors
 
 %description plugins
 This package contains a set of plugins written for Go but used also by
 few other editors.
 
-%description plugins -l pl
-Ten pakiet zawiera zestaw wtyczek napisanych dla Go, ale uøywanych
-rÛwnieø przez kilka innych edytorÛw.
+%description plugins -l pl.UTF-8
+Ten pakiet zawiera zestaw wtyczek napisanych dla Go, ale u≈ºywanych
+r√≥wnie≈º przez kilka innych edytor√≥w.
 
 %prep
 %setup -q
